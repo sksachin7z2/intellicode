@@ -9,8 +9,15 @@ const [testactive, setTestactive] = useState(false);
 const [uptest, setUptest] = useState({})
 const [upresult, setUpresult] = useState({})
 
+const [helper, setHelper] = useState(false)
 
+const [question, setQuestion] = useState("")
+const [difficulty, setDifficulty] = useState("easy")
+const [category, setCategory] = useState("All")
 
+const handlecategory=(e)=>{
+setCategory(e.target.value)
+}
 
 const updatetestcases=()=>{
   const re=testcase;
@@ -82,9 +89,11 @@ const handlefinalsubmit=()=>{
     else
     results[i]=result[i]
    }
-
+console.log(question)
    console.log(test);
    console.log(results);
+   console.log(difficulty);
+   console.log(category);
    
    }
    const evaluate=(e,i)=>{
@@ -107,24 +116,79 @@ const evaluate1=(e,i)=>{
   return e;
   
 }
+const handlequestion=(e)=>{
+  setQuestion(e.target.value);
+}
+const handledifficulty=(e)=>{
+setDifficulty(e.target.value);
+}
+const handledeletetest=(i)=>{
+delete uptest[i];
+delete upresult[i]
+let arr=testcase;
+arr.splice(i,1);
+let arr2=result;
+arr2.splice(i,1)
+
+setTestcase(arr2)
+setTestcase(arr);
+setHelper(!helper)
+}
+
   return (
     
 <div className='container m-auto'>
   <div className='space-y-2'>
   <div className=' border-2 rounded-md border-black p-5'>
+    <div className='flex justify-between'>
                     <h1 className='text-red-900 text-lg'>Question</h1>
+                    <div >
+              
+              <h1>Difficulty</h1>
+              <div  className='flex gap-3'>
+                <div>
+                <input type="radio" name="q" id="easy" value="easy" onChange={handledifficulty}/>
+              <label htmlFor="easy">Easy</label>
+                </div>
+                <div>
+                <input type="radio" name="q" id="medium"  value="medium" onChange={handledifficulty}/>
+              <label htmlFor="medium">Medium</label>
+                </div>
+                <div>
+                <input type="radio" name="q" id="hard" value="hard" onChange={handledifficulty}/>
+              <label htmlFor="hard">Hard</label>
+                </div>
+              </div>
+              
+
+          </div>
+          <div >
+            <h1>Category</h1>
+            <div>
+            <label className='ll' htmlFor="category">Select category: </label>
+  <select name="category" onChange={handlecategory}>
+    <option value="any">All</option>
+    <option value="Math">Math</option>
+    <option value="Array">Array</option>
+    <option value="string">string</option>
+  </select>
+            </div>
+          </div>
+    </div>
                     <div>
-                        <textarea className='w-[100%] border-2 rounded-md border-black p-5' name="question" id="question" rows="10"></textarea>
+                        <textarea onChange={handlequestion} value={question} className='w-[100%] border-2 rounded-md border-black p-5' name="question" id="question" rows="10"></textarea>
                     </div>
             </div>
-            <div className="grid grid-cols-3 gap-1">
-            <div className=' border-2 rounded-md border-black p-5 space-y-3'>
-            <h1>Test cases</h1>
+            <div className=''>
+            <div className=' border-2 rounded-md border-black p-5 space-y-3 grid grid-cols-2'>
+              <div>
+              <h1>Test cases</h1>
             <div>
               
                 <div className='space-y-3'>
                  {   testcase.map((e,i)=>{
-                  return(<div className='flex justify-center items-center gap-6' key={i}><div>{i}</div> <textarea  onChange={handletest} name={i}  className='overflow-hidden border-2 rounded p-1 border-gray-600' rows=""  value={evaluate(e,i)}></textarea>
+                  return(<div className='flex  items-center gap-6' key={i}><div>{i}</div> <textarea  onChange={handletest} name={i}  className='overflow-hidden border-2 rounded p-1 border-gray-600' rows=""  value={evaluate(e,i)}></textarea>
+                  <div onClick={()=>{handledeletetest(i)}}>X</div>
                  </div>
                   )
                 })
@@ -135,7 +199,7 @@ const evaluate1=(e,i)=>{
                 <h1>Result</h1>
                   {result.map((e,i)=>{
                       return(
-                        <div key={i} className='flex justify-center items-center gap-6'><div>{i}</div> <textarea  onChange={handleres} name={i}  className='overflow-hidden border-2 rounded p-1 border-gray-600' rows=""  value={evaluate1(e,i)}></textarea></div>
+                        <div key={i} className='flex  items-center gap-6'><div>{i}</div> <textarea  onChange={handleres} name={i}  className='overflow-hidden border-2 rounded p-1 border-gray-600' rows=""  value={evaluate1(e,i)}></textarea><div onClick={()=>{handledeletetest(i)}}>X</div></div>
                       )
                       })}
                </div>
@@ -143,12 +207,14 @@ const evaluate1=(e,i)=>{
                 
               
             </div>
-                   <div>
-                    <div className='my-5'>
+              </div>
+          
+                   <div >
+                    {/* <div className='my-5'>
                     <button onClick={()=>{setTestactive(!testactive)}} className='border p-1 rounded-md bg-blue-700 text-white font-bold cursor-pointer'>
                     Add testcase  +
-                    </button> </div>
-                   {testactive&& <div className='border rounded border-black p-3'>
+                    </button> </div> */}
+                    <div className='border rounded border-black p-3'>
                     <h2>Create Testcases</h2>
                       <div >
                         <h2>Test case</h2>
@@ -161,40 +227,10 @@ const evaluate1=(e,i)=>{
                       <div >
                        <button onClick={updatetestcases} className='p-2 rounded-md bg-blue-700 text-white font-bold cursor-pointer'>Add</button>
                       </div>
-                    </div>}
+                    </div>
                    </div>
             </div>
-            <div className=' border-2 rounded-md border-black p-5'>
-                <h1>Difficulty</h1>
-                <div >
-                  <div>
-                  <input type="radio" name="q" id="easy" />
-                <label htmlFor="easy">Easy</label>
-                  </div>
-                  <div>
-                  <input type="radio" name="q" id="medium" />
-                <label htmlFor="medium">Medium</label>
-                  </div>
-                  <div>
-                  <input type="radio" name="q" id="hard" />
-                <label htmlFor="hard">Hard</label>
-                  </div>
-                </div>
-                
-
-            </div>
-            <div className=' border-2 rounded-md border-black p-5'>
-              <h1>Category</h1>
-              <div>
-              <label className='ll' htmlFor="category">Select category: </label>
-		<select name="category">
-			<option value="any">All</option>
-			<option value="Math">Math</option>
-			<option value="Array">Array</option>
-			<option value="string">string</option>
-		</select>
-              </div>
-            </div>
+ 
             </div>
 
           <div className='text-center'>
