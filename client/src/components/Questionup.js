@@ -1,14 +1,14 @@
-import React from 'react'
-import axios from 'axios'
-import {useState,useEffect} from 'react'
-import { useNavigate } from 'react-router-dom';
-import Ques from './Ques';
-function Question() {
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+function Questionup() {
+  let navigate=useNavigate();
+    let { id } = useParams();
   const [testcase, setTestcase] = useState([]);
 const [result, setResult] = useState([])
 const [test, setTest] = useState("")
 const [res, setRes] = useState("")
-const [testactive, setTestactive] = useState(false);
+
 const [uptest, setUptest] = useState({})
 const [upresult, setUpresult] = useState({})
 
@@ -17,16 +17,23 @@ const host="http://localhost:5000"
 const [question, setQuestion] = useState("")
 const [difficulty, setDifficulty] = useState("easy")
 const [category, setCategory] = useState("All")
-const [data, setData] = useState([])
+
+
+
+
 const getquestion=async()=>{
-    const getall=await axios.get(host+"/api/question/getallQuestions");
+    const getall=await axios.get(`${host}/api/question/getQuestion/${id}`);
     const res=getall.data;
-    setData(res)
+    setQuestion(res.question);
+    setTestcase(res.testcase);
+    setDifficulty(res.difficulty);
+    setCategory(res.category);
+    setResult(res.result)
 }
 useEffect(() => {
  getquestion();
-}, [data])
-
+ // eslint-disable-next-line
+}, [])
 
 const handlecategory=(e)=>{
 setCategory(e.target.value)
@@ -107,10 +114,10 @@ const handlefinalsubmit=async()=>{
 //    console.log(results);
 //    console.log(difficulty);
 //    console.log(category);
-const res=await axios.post('http://localhost:5000/api/question/addQuestion',{question:question,testcase:test,result:results,difficulty:difficulty,category:category});
+const res=await axios.put(`${host}/api/question/updateQuestion/${id}`,{question:question,testcase:test,result:results,difficulty:difficulty,category:category});
 const resp=res.data;
 console.log(resp)
-   
+   navigate('/question')
    }
    const evaluate=(e,i)=>{
     if(uptest[i]){
@@ -150,19 +157,11 @@ setTestcase(arr2)
 setTestcase(arr);
 setHelper(!helper)
 }
-let navigate=useNavigate()
-const handleupdatepage=(e)=>{
-navigate('/question/edit'+`/${e}`);
-}
-const handledeletequestion=async(id)=>{
-  const res=await axios.delete(host+`/api/question/deleteQuestion/${id}`);
-  const resp=res.data;
-  getquestion()
 
-}
   return (
     
 <div className='container m-auto'>
+  
   <div className='space-y-2'>
   <div className=' border-2 rounded-md border-black p-5'>
     <div className='flex justify-between'>
@@ -172,15 +171,15 @@ const handledeletequestion=async(id)=>{
               <h1 className='text-lg font-bold'>Difficulty</h1>
               <div  className='flex gap-3'>
                 <div>
-                <input type="radio" name="q" id="easy" value="easy" onChange={handledifficulty}/>
+                <input checked={(difficulty==='easy')?true:false}  type="radio" name="q" id="easy" value="easy" onChange={handledifficulty}/>
               <label htmlFor="easy">Easy</label>
                 </div>
                 <div>
-                <input type="radio" name="q" id="medium"  value="medium" onChange={handledifficulty}/>
+                <input checked={(difficulty==='medium')?true:false} type="radio" name="q" id="medium"  value="medium" onChange={handledifficulty}/>
               <label htmlFor="medium">Medium</label>
                 </div>
                 <div>
-                <input type="radio" name="q" id="hard" value="hard" onChange={handledifficulty}/>
+                <input checked={(difficulty==='hard')?true:false} type="radio" name="q" id="hard" value="hard" onChange={handledifficulty}/>
               <label htmlFor="hard">Hard</label>
                 </div>
               </div>
@@ -259,43 +258,17 @@ const handledeletequestion=async(id)=>{
             </div>
 
           <div className='text-center'>
-            <button onClick={handlefinalsubmit} className='border p-1 rounded-md bg-blue-700 text-white font-bold cursor-pointer'>Submit</button>
+            <button onClick={handlefinalsubmit} className='border p-1 rounded-md bg-blue-700 text-white font-bold cursor-pointer'>Update</button>
           </div>
            
   </div>
             
 
-      <section>
-        <div>
-          <div>
-              <h1>All Question</h1>
-          </div>
-          <div className='grid grid-cols-3 gap-2'>
-              {
-                data.map((e,i)=>{
-                  return(<div className='p-5 rounded border-2 border-blue-500 shadow-lg'>
-                             <div className='flex justify-end gap-5 relative bottom-0'>
-              <div>
-                <button onClick={()=>{handleupdatepage(e._id)}} className='bg-blue-700 text-white rounded-md px-3 py-2'> Edit</button>
-              </div>
-              <div>
-                <button onClick={()=>{handledeletequestion(e._id)}} className='bg-red-700 text-white rounded-md px-3 py-2'> Delete</button>
-              </div>
-        </div>
-                    <Ques key={i} question={e.question} testcase={e.testcase} result={e.result} difficulty={e.difficulty} category={e.category} />
-              
-                    </div> 
-
-                  )
-                })
-              }
-          </div>
-        </div>
-      </section>
+    
     </div>
     
     
   )
 }
 
-export default Question
+export default Questionup

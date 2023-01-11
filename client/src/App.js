@@ -5,6 +5,7 @@ import
   Routes,
   Route
 } from 'react-router-dom'
+import Questionup from './components/Questionup'
 import Home from './components/Home'
 import Navbar from './components/Navbar'
 import Question from './components/Question'
@@ -15,6 +16,8 @@ function App() {
     <Routes>
       <Route exact path='/' element={<Home/>}/>
       <Route exact path='/question' element={<Question/>}/>
+      <Route exact path='/question/edit/:id' element={<Questionup/>}/>
+
     </Routes>
    </Router>
   )
