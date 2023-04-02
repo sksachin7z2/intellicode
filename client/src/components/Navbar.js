@@ -33,6 +33,12 @@ function Navbar({notify}) {
                   </div>
                   
                 </li></Link>
+            <Link to="/editor"> <li>
+                 <div className='hidden  lg:block font-bold text-white hover:bg-[#7171d5] rounded-md p-1 m-2 cursor-pointer'>
+                  editor
+                  </div>
+                  
+                </li></Link>
              
                </ul>
             </div>

@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 const {Schema} =mongoose
 const schema=new Schema({
+    questionName:{
+          type:String,
+          default:"" 
+    },
     question:{
         type:String,
         required:true

@@ -166,7 +166,7 @@ const handledeletequestion=async(id)=>{
   <div className='space-y-2'>
   <div className=' border-2 rounded-md border-black p-5'>
     <div className='flex justify-between'>
-                    <h1 className='text-lg font-bold'>Question</h1>
+                    <div className='text-lg font-bold flex gap-2'> <h1>Question</h1> <div></div>  </div>
                     <div >
               
               <h1 className='text-lg font-bold'>Difficulty</h1>

@@ -6,7 +6,7 @@ router.post('/addQuestion',async(req,res)=>{
     const {question,testcase,result,difficulty,category} =req.body;
     try {
         const obj={
-            question,testcase,result,difficulty,category
+           question,testcase,result,difficulty,category
         }
         await Question.create(obj);
         res.json({status:"question added",obj})

@@ -1,8 +1,11 @@
 import React from 'react'
+import CodeEditorWindow from './Editor'
 
 function Home() {
   return (
-    <div>This is home</div>
+    <div>
+      <CodeEditorWindow/>
+    </div>
   )
 }
 
