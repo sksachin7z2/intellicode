@@ -15,13 +15,15 @@ const [upresult, setUpresult] = useState({})
 const [helper, setHelper] = useState(false)
 const host="http://localhost:5000"
 const [question, setQuestion] = useState("")
+const [questionName, setQuestionname] = useState("")
 const [difficulty, setDifficulty] = useState("easy")
 const [category, setCategory] = useState("All")
 const [data, setData] = useState([])
+
 const getquestion=async()=>{
     const getall=await axios.get(host+"/api/question/getallQuestions");
     const res=getall.data;
-    setData(res)
+    setData(res.data)
 }
 useEffect(() => {
  getquestion();
@@ -107,7 +109,7 @@ const handlefinalsubmit=async()=>{
 //    console.log(results);
 //    console.log(difficulty);
 //    console.log(category);
-const res=await axios.post('http://localhost:5000/api/question/addQuestion',{question:question,testcase:test,result:results,difficulty:difficulty,category:category});
+const res=await axios.post('http://localhost:5000/api/question/addQuestion',{questionName:questionName,question:question,testcase:test,result:results,difficulty:difficulty,category:category});
 const resp=res.data;
 console.log(resp)
    
@@ -134,6 +136,9 @@ const evaluate1=(e,i)=>{
 }
 const handlequestion=(e)=>{
   setQuestion(e.target.value);
+}
+const handlequestionname=(e)=>{
+  setQuestionname(e.target.value);
 }
 const handledifficulty=(e)=>{
 setDifficulty(e.target.value);
@@ -166,7 +171,7 @@ const handledeletequestion=async(id)=>{
   <div className='space-y-2'>
   <div className=' border-2 rounded-md border-black p-5'>
     <div className='flex justify-between'>
-                    <div className='text-lg font-bold flex gap-2'> <h1>Question</h1> <div></div>  </div>
+                    <div className='text-lg font-bold space-y-3'> <h1>Question</h1> <div ><input className='border-2 border-black px-2 rounded-sm'  type="text" onChange={handlequestionname} value={questionName}></input></div>  </div>
                     <div >
               
               <h1 className='text-lg font-bold'>Difficulty</h1>
@@ -192,15 +197,23 @@ const handledeletequestion=async(id)=>{
             <div>
             <label className='ll' htmlFor="category">Select category: </label>
   <select name="category" onChange={handlecategory}>
-    <option value="any">All</option>
-    <option value="Math">Math</option>
-    <option value="Array">Array</option>
-    <option value="string">string</option>
+  <option value="all">All</option>
+                    <option value="math">math</option>
+                    <option value="array">array</option>
+                    <option value="string">string</option>
+                    <option value="greedy">greedy</option>
+                    <option value="stack">stack</option>
+                    <option value="queue">queue</option>
+                    <option value="tree">tree</option>
+                    <option value="graph">graph</option>
+                    <option value="dynamic_programming">dynamic programming</option>
+                    <option value="linkedlist">linkedlist</option>
+                    <option value="sorting">sorting</option>
   </select>
             </div>
           </div>
     </div>
-                    <div>
+                    <div className='my-2'>
                         <textarea onChange={handlequestion} value={question} className='w-[100%] border-2 rounded-md border-black p-5' name="question" id="question" rows="10"></textarea>
                     </div>
             </div>
@@ -282,7 +295,7 @@ const handledeletequestion=async(id)=>{
                 <button onClick={()=>{handledeletequestion(e._id)}} className='bg-red-700 text-white rounded-md px-3 py-2'> Delete</button>
               </div>
         </div>
-                    <Ques key={i} question={e.question} testcase={e.testcase} result={e.result} difficulty={e.difficulty} category={e.category} />
+                    <Ques key={i} questionName={e.questionName} question={e.question} testcase={e.testcase} result={e.result} difficulty={e.difficulty} category={e.category} />
               
                     </div> 
 

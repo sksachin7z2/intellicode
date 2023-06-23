@@ -3,10 +3,10 @@ import { Question } from "../model/Question.js";
 const router = express.Router()
 
 router.post('/addQuestion',async(req,res)=>{
-    const {question,testcase,result,difficulty,category} =req.body;
+    const {questionName,question,testcase,result,difficulty,category} =req.body;
     try {
         const obj={
-           question,testcase,result,difficulty,category
+          questionName, question,testcase,result,difficulty,category
         }
         await Question.create(obj);
         res.json({status:"question added",obj})
@@ -19,7 +19,7 @@ router.post('/addQuestion',async(req,res)=>{
 router.get('/getallQuestions',async(req,res)=>{
     try {
         const all=await Question.find();
-        res.json(all)
+        res.json({data:all})
         
     } catch (error) {
         console.log(error);
@@ -29,9 +29,9 @@ router.get('/getallQuestions',async(req,res)=>{
 })
 router.put('/updateQuestion/:id',async(req,res)=>{
     const {id}=req.params
-    const {question,testcase,result,difficulty,category} =req.body;
+    const {questionName,question,testcase,result,difficulty,category} =req.body;
     try {
-        const upquestion=await Question.findByIdAndUpdate(id,{question,testcase,result,difficulty,category},{new:true});
+        const upquestion=await Question.findByIdAndUpdate(id,{questionName,question,testcase,result,difficulty,category},{new:true});
         res.json({status:"updated question",updated:upquestion})
     } catch (error) {
         console.log(error)

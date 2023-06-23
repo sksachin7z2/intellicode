@@ -3,7 +3,7 @@ const {Schema} =mongoose
 const schema=new Schema({
     questionName:{
           type:String,
-          default:"" 
+         required :true
     },
     question:{
         type:String,

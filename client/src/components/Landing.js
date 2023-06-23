@@ -395,19 +395,28 @@ setStatuscode(true)
           </div>
           <div>
           {statuscode&& <div>request limit exceeded</div> }
-          {(!statuscode && wrs)&&<><div>Result</div><div>{wrongtc!==-1?"wrong answer": "correct answer"}</div></>}
+          {(!statuscode && wrs)&&<><div>Result</div></>}
           {!statuscode&&suboutput.map((e,i)=>{
-            const mod=e.slice(0,e?.length-1)
-            console.log(suboutput,result)
-            if(mod!==result[i] && once)
-            {
-              setWrongtc(i);
-              once=once-1;
+            let index=0;
+            for(let i=e?.length-1;i>=0;i--){
+              if(e[i]!=='\n' && e[i]!==' '){
+                index=i;
+                break;
+              }
+              
             }
+            let mod=e?.slice(0,index+1);
+            console.log(suboutput,result,mod)
             if(i===3) //only three testcase visible
             return;
-            return <div className="my-1">{(mod===result[i])?<div > <div className="bg-green-600 py-1 px-2 rounded-md">Testcase {i} correct</div> </div>: <div className="bg-red-600 py-1 px-2 rounded-md"> <div>Testcase {i} wrong</div> </div>
-            }</div>
+            if(mod!==result[i])
+            {
+              
+             return <div className="bg-red-600 py-1 px-2 rounded-md"> <div>Testcase {i} wrong</div></div>
+            }
+            
+            return <div className="my-1"> <div className="bg-green-600 py-1 px-2 rounded-md">Testcase {i} correct</div> </div>
+            
           })}
           <div></div>
         </div>

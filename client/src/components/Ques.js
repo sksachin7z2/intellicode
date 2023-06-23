@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Ques({question,testcase,result,difficulty,category}) {
+function Ques({question,testcase,result,difficulty,category,questionName}) {
   return (
     <div >
         <div>
           <div>
-          <h1 className='text-lg font-bold'>Question</h1>
+          <div className='text-lg font-bold'> <h1>Question</h1> <div>{questionName}</div> </div>
             <div className=''>
               <textarea className='w-[100%] p-3 border-2 border-black rounded '   value={question} readOnly>
 

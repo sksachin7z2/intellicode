@@ -15,6 +15,7 @@ const [upresult, setUpresult] = useState({})
 const [helper, setHelper] = useState(false)
 const host="http://localhost:5000"
 const [question, setQuestion] = useState("")
+const [questionName, setQuestionname] = useState("")
 const [difficulty, setDifficulty] = useState("easy")
 const [category, setCategory] = useState("All")
 
@@ -24,6 +25,7 @@ const [category, setCategory] = useState("All")
 const getquestion=async()=>{
     const getall=await axios.get(`${host}/api/question/getQuestion/${id}`);
     const res=getall.data;
+    setQuestionname(res.questionName);
     setQuestion(res.question);
     setTestcase(res.testcase);
     setDifficulty(res.difficulty);
@@ -114,7 +116,7 @@ const handlefinalsubmit=async()=>{
 //    console.log(results);
 //    console.log(difficulty);
 //    console.log(category);
-const res=await axios.put(`${host}/api/question/updateQuestion/${id}`,{question:question,testcase:test,result:results,difficulty:difficulty,category:category});
+const res=await axios.put(`${host}/api/question/updateQuestion/${id}`,{questionName:questionName, question:question,testcase:test,result:results,difficulty:difficulty,category:category});
 const resp=res.data;
 console.log(resp)
    navigate('/question')
@@ -142,6 +144,9 @@ const evaluate1=(e,i)=>{
 const handlequestion=(e)=>{
   setQuestion(e.target.value);
 }
+const handlequestionName=(e)=>{
+  setQuestionname(e.target.value);
+}
 const handledifficulty=(e)=>{
 setDifficulty(e.target.value);
 }
@@ -165,7 +170,7 @@ setHelper(!helper)
   <div className='space-y-2'>
   <div className=' border-2 rounded-md border-black p-5'>
     <div className='flex justify-between'>
-                    <h1 className='text-lg font-bold'>Question</h1>
+                    <div className='text-lg font-bold'> <h1>Question</h1> <input className='px-2 rounded-sm border-2 border-black' type="text"  onChange={handlequestionName} value={questionName}></input> </div>
                     <div >
               
               <h1 className='text-lg font-bold'>Difficulty</h1>
@@ -191,15 +196,23 @@ setHelper(!helper)
             <div>
             <label className='ll' htmlFor="category">Select category: </label>
   <select name="category" onChange={handlecategory}>
-    <option value="any">All</option>
-    <option value="Math">Math</option>
-    <option value="Array">Array</option>
-    <option value="string">string</option>
+  <option value="math">All</option>
+                    <option value="math">math</option>
+                    <option value="array">array</option>
+                    <option value="string">string</option>
+                    <option value="greedy">greedy</option>
+                    <option value="stack">stack</option>
+                    <option value="queue">queue</option>
+                    <option value="tree">tree</option>
+                    <option value="graph">graph</option>
+                    <option value="dynamic_programming">dynamic programming</option>
+                    <option value="linkedlist">linkedlist</option>
+                    <option value="sorting">sorting</option>
   </select>
             </div>
           </div>
     </div>
-                    <div>
+                    <div className='my-2'>
                         <textarea onChange={handlequestion} value={question} className='w-[100%] border-2 rounded-md border-black p-5' name="question" id="question" rows="10"></textarea>
                     </div>
             </div>

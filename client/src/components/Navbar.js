@@ -39,6 +39,12 @@ function Navbar({notify}) {
                   </div>
                   
                 </li></Link>
+            <Link to="/allquestion"> <li>
+                 <div className='hidden  lg:block font-bold text-white hover:bg-[#7171d5] rounded-md p-1 m-2 cursor-pointer'>
+                  Allquestion
+                  </div>
+                  
+                </li></Link>
              
                </ul>
             </div>

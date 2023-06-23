@@ -11,7 +11,7 @@ import axios from 'axios';
 function Editor () {
 let location=useLocation();
     const {qid}=queryString.parse(location.search)
-    const [windowinfo, setWindowinfo] = useState({question:"",category:"",difficulty:""})
+    const [windowinfo, setWindowinfo] = useState({questionName:"",question:"",category:"",difficulty:""})
     const [testcase, setTestcase] = useState([])
     const [result, setResult] = useState([])
 const getQuestion=async()=>{
@@ -19,7 +19,7 @@ const getQuestion=async()=>{
     const res=await axios.get(`${url}/api/question/getQuestion/${qid}`);
     const data=res.data;
     // console.log(data);
-    setWindowinfo({question:data.question,category:data.category,difficulty:data.difficulty});
+    setWindowinfo({questionName:data.questionName,question:data.question,category:data.category,difficulty:data.difficulty});
     setTestcase(data.testcase);
     setResult(data.result);
 }
@@ -51,7 +51,9 @@ useEffect(() => {
                 
                 <Pane>
                   <div >
+                  <div className='font-bold py-2 px-5'>{windowinfo.questionName}</div>
                   <div  className='p-5'>
+                    
                     <div className='grid grid-cols-2'>
                         <div>
                             <span className={`${windowinfo.difficulty==="easy"?"bg-green-500":windowinfo.difficulty==="medium"?"bg-yellow-600":"bg-red-500"} py-1 px-2 rounded-md font-bold`}>{windowinfo.difficulty}</span>
